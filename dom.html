@@ -1,0 +1,104 @@
+<html>
+<head>
+
+</head>
+<body>
+<h1>Entrada de estoque</h1>
+<form action="">
+    <button type="button" id="btnAdd">Adicionar linha</button>
+    <!--<button type="submit">Gerar</button>-->
+    <div>Total: <span id="total">0</span></div>
+    <table>
+        <thead>
+        <tr>
+            <th></th>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Valor compra</th>
+            <th>Subtotal</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <a href="#">Remover linha</a>
+            </td>
+            <td>
+                <select name="rows[product_id][]">
+                    <option value="1">Produto 1</option>
+                    <option value="2">Produto 2</option>
+                    <option value="3">Produto 3</option>
+                </select>
+            </td>
+            <td>
+                <input type="text" name="rows[amount][]">
+            </td>
+            <td>
+                <input type="text" name="rows[value][]">
+            </td>
+            <td>0</td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+<script type="text/javascript">
+
+    var firstRow = document.querySelector('table>tbody>tr:first-child');
+    var rowCloned = firstRow.cloneNode(true);
+
+    var btnAdd = document.getElementById('btnAdd');
+
+    btnAdd.addEventListener('click', function () {
+        addRow();
+    });
+
+    calculateSubtotal(firstRow);
+    deleteRow(firstRow.children[0]);
+
+    function addRow() {
+        var tbody = document.querySelector('table>tbody');
+        var newRowCloned = getNewRow();
+        tbody.appendChild(newRowCloned);
+        calculateSubtotal(newRowCloned);
+        deleteRow(newRowCloned.children[0]);
+    }
+
+    function getNewRow() {
+        return rowCloned.cloneNode(true);
+    }
+
+    function deleteRow(td) {
+        td.children[0].addEventListener('click', function () {
+            td.parentNode.remove()
+        })
+    }
+
+    function calculateSubtotal(row) {
+        var amountField = row.children[2].children[0];
+        var valueField = row.children[3].children[0];
+
+        var multiplication = function () {
+            var amount = amountField.value;
+            var value = valueField.value;
+            row.children[4].innerHTML = amount * value;
+            calculateTotal();
+        };
+
+        amountField.addEventListener('blur', multiplication);
+
+        valueField.addEventListener('blur', multiplication);
+    }
+
+    function calculateTotal() {
+        var rows = document.querySelectorAll('table>tbody>tr');
+        var sum = 0;
+        for (var i = 0; i<rows.length;i++) {
+            sum += parseFloat(rows[i].children[4].innerHTML);
+        }
+        document.getElementById('total').innerHTML = sum;
+    }
+
+
+</script>
+</body>
+</html>

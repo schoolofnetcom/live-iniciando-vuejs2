@@ -1,0 +1,36 @@
+<html>
+<head>
+
+</head>
+<body>
+<h1>SPA - Single Page Application</h1>
+<div id="app">
+    <router-view></router-view>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-router@3.0.1/dist/vue-router.min.js"></script>
+<script>
+
+    var router = new VueRouter({
+        routes: [
+            {
+                path: '/pagina1', component: {
+                    template: '<h1>Página 1</h1>'
+                }
+            },
+            {
+                path: '/pagina2', component: {
+                    template: '<h1>Página 2</h1>'
+                }
+            }
+        ]
+    })
+
+    var app = new Vue({
+        el: '#app',
+        router: router
+    })
+
+</script>
+</body>
+</html>

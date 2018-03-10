@@ -1,0 +1,84 @@
+<html>
+<head>
+
+</head>
+<body>
+<h1>Entrada de estoque</h1>
+<div id="app">
+    <form action="">
+        <button type="button" id="btnAdd" @click="addRow">Adicionar linha</button>
+        <!--<button type="submit">Gerar</button>-->
+        <div>Total: <span id="total">{{ total }}</span></div>
+        <table>
+            <thead>
+            <tr>
+                <th></th>
+                <th>Produto</th>
+                <th>Quantidade</th>
+                <th>Valor compra</th>
+                <th>Subtotal</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="(obj,index) in products">
+                <td>
+                    <a href="#" @click="deleteRow(index)">Remover linha</a>
+                </td>
+                <td>
+                    <select name="rows[product_id][]" v-model="obj.product_id">
+                        <option value="1">Produto 1</option>
+                        <option value="2">Produto 2</option>
+                        <option value="3">Produto 3</option>
+                    </select>
+                    {{ obj.product_id }}
+                </td>
+                <td>
+                    <input type="text" name="rows[amount][]" v-model="obj.amount">
+                    {{ obj.amount }}
+                </td>
+                <td>
+                    <input type="text" name="rows[value][]" v-model="obj.value">
+                    {{ obj.value }}
+                </td>
+                <td>{{ obj.amount * obj.value }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+<script>
+    //tr 10 - 0 a 9
+    //products - 0 a 9
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            products: []
+        },
+        computed: {
+            total: function(){
+                var sum = 0;
+                for (var i = 0; i<this.products.length;i++) {
+                    sum += parseFloat(this.products[i].amount * this.products[i].value);
+                }
+                return sum;
+            }
+        },
+        methods: {
+            addRow: function () {
+                this.products.push({
+                    product_id: 1,
+                    amount: 1,
+                    value: 0
+                });
+            },
+            deleteRow: function(index){
+                this.products.splice(index,1);
+            }
+        }
+    })
+    app.addRow();
+</script>
+</body>
+</html>
